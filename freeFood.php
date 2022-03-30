@@ -62,9 +62,7 @@ if($timeDifference > 800 || $fileCreated) {
         }
         $index++;
     }
-
     $data = ["timestamp" => (new DateTime())->getTimestamp(), "data" => $freeFood];
-
     $fp = fopen('./storage/freeFood.json', 'w');
     fwrite($fp, json_encode($data));
     fclose($fp);
