@@ -1,6 +1,7 @@
 <?php
 include "eat.php";
 include "freeFood.php";
+include "kozlovna.php";
 
 $fileCreated = false;
 
@@ -30,6 +31,7 @@ $foodsEat = $jedla;
 $foodsPrinted = $foods;
 $foodsEatPrinted = $foodsEat;
 $freeFoodsPrinted = $freeFood;
+$KozlovnaFoodsPrinted = $kozlovna;
 
 $interval = date_diff( DateTime::createFromFormat( 'U', $json_data['timestamp'] ), new DateTime());
 $timeDifference = (new DateTime())->getTimestamp() - $json_data['timestamp'];
@@ -114,6 +116,7 @@ if($timeDifference > 800 || $fileCreated) {
 <section class="w-full h-full">
 <table class="table">
     <thead class="thead-dark">
+
         <tr>
             <th  style='cursor: pointer' onclick="showAll()">All week</th>
             <?php
@@ -133,6 +136,18 @@ if($timeDifference > 800 || $fileCreated) {
         </tr>
     </thead>
     <tbody>
+    <tr>
+        <th>Kozlovna</th>
+        <?php
+        $index = 0;
+        foreach ($KozlovnaFoodsPrinted as $item){
+            if(isset($item['menu'])){
+                echo "<td id='col-$index' style='padding: 10px'><div id='col-koz-$index'>".implode("<hr/>",$item['menu'])."</div></td>";
+            }
+            $index++;
+        }
+        ?>
+    </tr>
         <tr>
             <th>Eat</th>
             <?php
@@ -177,30 +192,6 @@ if($timeDifference > 800 || $fileCreated) {
 </table>
 </section>
 
-<script>
-    const headerClick = (id) => {
-        console.log(id)
-
-        for (let i = 0; i < 7; i++){
-            if(i !== id) {
-                document.querySelector("#col-eat-" + i).style.display = 'none';
-                document.querySelector("#col-del-" + i).style.display = 'none';
-                document.querySelector("#col-kol-" + i).style.display = 'none';
-            } else {
-                document.querySelector("#col-eat-" + i).style.display = 'table-cell';
-                document.querySelector("#col-del-" + i).style.display = 'table-cell';
-                document.querySelector("#col-kol-" + i).style.display = 'table-cell';
-            }
-        }
-    }
-
-    const showAll = () =>{
-        for (let i = 0; i < 7; i++){
-            document.querySelector("#col-eat-" + i).style.display = 'table-cell';
-            document.querySelector("#col-del-" + i).style.display = 'table-cell';
-            document.querySelector("#col-kol-" + i).style.display = 'table-cell';
-        }
-    }
-</script>
+<script src="app.js"></script>
 </body>
 </html>
